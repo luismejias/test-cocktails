@@ -1,0 +1,1 @@
+export * from './cocktails-table/cocktails-table.component';

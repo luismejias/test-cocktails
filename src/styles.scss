@@ -1,4 +1,66 @@
 /* You can add global styles to this file, and also import other style files */
-
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.button_upload {
+	text-align: center;
+	input[type='file'] {
+		display: none;
+	}
+
+	.icon-check {
+		color: #6daf25;
+	}
+
+	.icon-denied {
+		color: #3f3f3f;
+	}
+
+}	
+
+.btn-primary {
+	display: flex;
+	background-color: #0D47A1;
+	border: 1px solid #0D47A1;
+	border-radius: 4px;
+	min-width: 110px;
+	height: 24px;
+	color: #fff;
+	cursor: pointer;
+	font-family: Roboto, 'Helvetica Neue', sans-serif;
+	font-size: 16px;
+	padding: 4px;
+	justify-content: center;
+	align-items: center;
+	width: auto;
+	&:hover {
+		background-color: #fff;
+    color: #0D47A1;
+	}
+}
+
+.btn-secundary {
+	display: flex;
+	background-color: transparent;
+	border: 1px solid #B22222;
+	border-radius: 4px;
+	min-width: 110px;
+	height: 24px;
+	color: #B22222;
+	cursor: pointer;
+	font-family: Roboto, 'Helvetica Neue', sans-serif;
+	font-size: 16px;
+	padding: 4px;
+	justify-content: center;
+	align-items: center;
+	width: auto;
+	&:hover {
+		background-color: #B22222;
+		color: #fff;
+	}
+}
+
+.btn-disabled {
+	cursor: not-allowed !important;
+	opacity: 0.6;
+}

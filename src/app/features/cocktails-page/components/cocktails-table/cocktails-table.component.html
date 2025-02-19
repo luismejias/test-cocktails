@@ -1,0 +1,47 @@
+<div class="heroes-table mat-elevation-z8">  
+    <table mat-table [dataSource]="dataSource" class="heroes-table__table">
+     <ng-container matColumnDef="id" class="heroes-table__item-header">
+      <th  mat-header-cell *matHeaderCellDef> Id </th>
+      <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="name" class="heroes-table__item-header">
+      <th mat-header-cell *matHeaderCellDef> Nombre </th>
+      <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="biography" class="heroes-table__item-header">
+      <th  mat-header-cell *matHeaderCellDef> Biografía </th>
+      <td mat-cell *matCellDef="let element" class="heroes-table__biography"> {{element.biography}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="image" class="heroes-table__item-header">
+      <th  mat-header-cell *matHeaderCellDef> Foto </th>
+      <td mat-cell *matCellDef="let element"><img src="{{element.image}}" width="100px" height="80px"> </td>
+    </ng-container>
+
+    <ng-container matColumnDef="appearance" class="heroes-table__item-header">
+      <th  mat-header-cell *matHeaderCellDef> Aparición </th>
+      <td mat-cell *matCellDef="let element"> {{element.appearance | date: 'dd/MM/yyyy'}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="house" class="heroes-table__item-header">
+      <th  mat-header-cell *matHeaderCellDef> Casa </th>
+      <td mat-cell *matCellDef="let element"> {{element.house}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="edit">
+      <th mat-header-cell *matHeaderCellDef></th>
+      <td mat-cell *matCellDef="let element"><mat-icon class="heroes-table__icon-edit">edit</mat-icon> </td>
+    </ng-container>
+
+    <ng-container matColumnDef="delete">
+      <th mat-header-cell *matHeaderCellDef></th>
+      <td mat-cell *matCellDef="let element"> <mat-icon class="heroes-table__icon-delete">delete</mat-icon> </td>
+    </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+</div>
+
