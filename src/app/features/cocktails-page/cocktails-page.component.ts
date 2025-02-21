@@ -8,8 +8,16 @@ import {
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 
-import { CocktailService, Cocktails, Drink } from '../../core';
-import { CocktailsTableComponent } from './components/';
+import {
+  CocktailFiltersStateService,
+  CocktailService,
+  Cocktails,
+  Drink,
+} from '../../core';
+import {
+  CocktailFiltersComponent,
+  CocktailsTableComponent,
+} from './components/';
 import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
@@ -21,18 +29,22 @@ import { MatTableDataSource } from '@angular/material/table';
     FormsModule,
     ReactiveFormsModule,
     CocktailsTableComponent,
-
+    CocktailFiltersComponent,
   ],
   templateUrl: './cocktails-page.component.html',
   styleUrl: './cocktails-page.component.scss',
 })
 export class CocktailsPageComponent implements OnInit {
   private cocktailService = inject(CocktailService);
+  private cocktailFiltersStateService = inject(CocktailFiltersStateService);
   dataSource = new MatTableDataSource<Drink>([]);
   readonly searchQuery = new FormControl('', [Validators.required]);
 
   ngOnInit() {
     this.onSearch();
+  }
+
+  loadData() {
     this.cocktailService.getByName('').subscribe((cocktails: Cocktails) => {
       if (cocktails.drinks.length > 0) {
         this.dataSource.data = cocktails.drinks;
@@ -40,10 +52,8 @@ export class CocktailsPageComponent implements OnInit {
     });
   }
 
-  onSearch(): void {
-    this.searchQuery.valueChanges.subscribe((value) => {
-      console.log({ value });
-    });
+  onSearch(filterFormValueChanged?: any): void {
+    console.log(filterFormValueChanged);
   }
 
   viewDetails(id: string): void {

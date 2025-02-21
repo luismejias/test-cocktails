@@ -1,11 +1,6 @@
 <div class="Cocktails-page">
-  <mat-form-field style="width: 50%;">
-    <mat-label>Ingresa tu búsqueda</mat-label>
-    <input matInput placeholder="Buscar cóctel por nombre, ingrediente o ID" [formControl]="searchQuery" required />
-    @if (searchQuery.invalid) {
-    <mat-error>¡Por favor ingrese un elemento válido!</mat-error>
-    }
-  </mat-form-field>
+  <button class="btn-primary"(click)="loadData()" style="margin-bottom: 45px;">Cargar datos</button> 
+  <app-cocktail-filters (filterFormValueChanged)="onSearch($event)"></app-cocktail-filters>
   @if (dataSource.data.length > 0) {
   <app-cocktails-table [dataSource]="dataSource"></app-cocktails-table>
   }
