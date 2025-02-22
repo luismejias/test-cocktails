@@ -1,1 +1,1 @@
-export * from './image/image.service';
+export * from './handler-storage/handler-storage.service';

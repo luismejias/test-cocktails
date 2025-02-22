@@ -1,7 +1,11 @@
+
 <div class="Cocktails-page">
-  <button class="btn-primary"(click)="loadData()" style="margin-bottom: 45px;">Cargar datos</button> 
-  <app-cocktail-filters (filterFormValueChanged)="onSearch($event)"></app-cocktail-filters>
-  @if (dataSource.data.length > 0) {
+  <app-cocktail-filters (filterFormValueChanged)="onFilter($event)"></app-cocktail-filters>
+  @if (dataSource.data.length
+  <= 0 && isLoadingResults) { <ngx-skeleton-loader count="6" appearance="line"
+    [theme]="{height: '60px', background: '#e8e7e7'}" />
+  }
+  @else {
   <app-cocktails-table [dataSource]="dataSource"></app-cocktails-table>
   }
 </div>

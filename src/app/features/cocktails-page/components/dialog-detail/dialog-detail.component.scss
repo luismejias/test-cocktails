@@ -1,0 +1,47 @@
+.dialog-detail {
+    display: flex;
+    flex-direction: column;
+    width: 400px;
+    padding: 24px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 4px;
+
+    &__image {
+        width: 400px;
+        height: 300px;
+    }
+
+    &__title {
+        font-size: 24px;
+        color: #0D47A1;
+    }
+
+    &__title-box {
+        margin-bottom: 20px;
+    }
+
+    &__box {
+        display: flex;
+        flex-direction: column;
+        padding: 4px;
+        margin-top: 20px;
+    }
+
+    &__item {
+        display: flex;
+        justify-content: space-between;
+        width: 400px;
+        border-bottom: 1px solid #3f3f3f;
+        margin-bottom: 20px;
+        padding-bottom: 8px;
+    }
+    &__label {
+        font-weight: bold;
+        color:#0D47A1;
+    }
+    &__description {
+        color: #3f3f3f;
+        font-weight: lighter;
+    }
+}

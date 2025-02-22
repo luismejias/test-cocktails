@@ -55,4 +55,14 @@ export interface Cocktails {
     strCreativeCommonsConfirmed: string | null;
     dateModified: string | null;
   }
+
+  export interface FormattedCocktail {
+    id: number;
+    name: string;
+    ingredients: string[];
+    measures: string[];
+    instructions: string | null;
+    image: string;
+    actions: any[]
+  };
   

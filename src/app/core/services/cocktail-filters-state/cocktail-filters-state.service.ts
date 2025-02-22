@@ -14,20 +14,24 @@ export class CocktailFiltersStateService {
     initialState
   );
 
-  private CocktailFiltersState$ = this.CocktailFiltersStateSubject$.asObservable();
+  private cocktailFiltersState$ = this.CocktailFiltersStateSubject$.asObservable();
 
   select<K>(fnMap: (state: CocktailFiltersState) => K): Observable<K> {
-    return this.CocktailFiltersState$.pipe(
+    return this.cocktailFiltersState$.pipe(
       map((source) => fnMap(source)),
       distinctUntilChanged()
     );
+  }
+
+  getCocktailFiltersState(): Observable<CocktailFiltersState> {
+    return this.cocktailFiltersState$;
   }
 
   getCurrentState<K extends keyof CocktailFiltersState>(key: K): CocktailFiltersState[K] {
     return this.CocktailFiltersStateSubject$.getValue()[key];
   }
 
-  setCocktailFiltersState(state: {id: number, name: string, ingredient: string }): void {
+  setCocktailFiltersState(state: CocktailFiltersState): void {
     this.updateState({ ...state });
   }
 

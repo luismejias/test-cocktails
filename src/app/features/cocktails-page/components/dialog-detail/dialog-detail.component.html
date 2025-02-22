@@ -1,0 +1,38 @@
+<div class="dialog-detail">
+    <div class="dialog-detail__title-box">
+        <span class="dialog-detail__title">{{data.name}}</span>
+    </div>
+    <img [src]="data.image" class="dialog-detail__image">
+    <div class="dialog-detail__box">
+        <div class="dialog-detail__item">
+            <span class="dialog-detail__label">ID:
+                <span class="dialog-detail__description">{{data.id}}</span>
+            </span>
+
+        </div>
+        <div class="dialog-detail__item">
+            <span class="dialog-detail__label">Nombre:
+                <span class="dialog-detail__description">{{data.name}}</span>
+            </span>
+
+        </div>
+        <div class="dialog-detail__item">
+            <span class="dialog-detail__label">Ingredientes:
+                <span class="dialog-detail__description">
+
+                    @for (ingredient of data.ingredients; track $index) {
+                    <span class=""> {{ ingredient }} ( {{ data.measures[$index]}} ) | </span>
+                    }
+                </span></span>
+
+        </div>
+        <div class="dialog-detail__item">
+            <span class="dialog-detail__label">Instruciones:
+                <span class="dialog-detail__description">{{
+                    data.instructions }}</span>
+            </span>
+
+        </div>
+
+    </div>
+</div>

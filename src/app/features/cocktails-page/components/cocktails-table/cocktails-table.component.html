@@ -1,24 +1,46 @@
-<div class="heroes-table mat-elevation-z8">  
-    <table mat-table [dataSource]="dataSource" class="heroes-table__table">
-     <ng-container matColumnDef="id" class="heroes-table__item-header">
+<div class="cocktails-table mat-elevation-z8">  
+    <table mat-table [dataSource]="dataSource" class="cocktails-table__table">
+     <ng-container matColumnDef="id" class="cocktails-table__item-header">
       <th  mat-header-cell *matHeaderCellDef> Id </th>
-      <td mat-cell *matCellDef="let element"> {{element.idDrink}} </td>
+      <td mat-cell *matCellDef="let element"> {{element.id}} </td>
     </ng-container>
 
-    <ng-container matColumnDef="name" class="heroes-table__item-header">
+    <ng-container matColumnDef="name" class="cocktails-table__item-header">
       <th mat-header-cell *matHeaderCellDef> Nombre </th>
-      <td mat-cell *matCellDef="let element"> {{element.strDrink}} </td>
+      <td mat-cell *matCellDef="let element"> {{element.name}} </td>
     </ng-container>
     
-    <ng-container matColumnDef="ingredients" class="heroes-table__item-header">
-      <th  mat-header-cell *matHeaderCellDef> Biografía </th>
-      <td mat-cell *matCellDef="let element" class="heroes-table__ingredients"> {{element.strIngredient1}} </td>
+    <ng-container matColumnDef="ingredients">
+      <th mat-header-cell *matHeaderCellDef>Ingredientes</th>
+      <td mat-cell *matCellDef="let element">
+        @for (ingredient of element.ingredients; track $index) {
+          <span class=""> {{ ingredient }} | </span>
+        }
+      </td>
     </ng-container>
 
-    <ng-container matColumnDef="actions" class="heroes-table__item-header">
-      <th  mat-header-cell *matHeaderCellDef> Acciones </th>
-      <td mat-cell *matCellDef="let element"><img src="{{element.strDrinkThumb}}" width="100px" height="80px"> </td>
-    </ng-container>   
+
+    <ng-container matColumnDef="image" class="cocktails-table__item-header">
+      <th  mat-header-cell *matHeaderCellDef> Imagen </th>
+      <td mat-cell *matCellDef="let element"><img src="{{element.image}}" width="100px" height="80px"> </td>
+    </ng-container> 
+    
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef> Acciones </th>
+      <td mat-cell *matCellDef="let element">
+        <button mat-icon-button [matMenuTriggerFor]="menu">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">
+          @for (option of element.actions; track option) {
+            <button mat-menu-item (click)="sendAction(element, option.action)">
+              {{ option.label }}
+            </button>
+          }
+        </mat-menu>
+      </td>
+    </ng-container>
+
       <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>

@@ -1,0 +1,22 @@
+.cocktails-table {
+    display: flex;
+    flex-direction: column;
+
+    &__table {
+        min-width: 1300px;
+    }
+
+    &__item-header {
+        display: flex !important;
+        justify-content: center;
+        height: 55px;
+        align-items: center;
+    }
+
+    &__name {
+        width: 40%;
+        text-align: justify;
+        padding: 10px 0px;
+    }
+
+}

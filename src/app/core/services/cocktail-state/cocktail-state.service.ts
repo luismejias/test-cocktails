@@ -1,39 +1,46 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, distinctUntilChanged, map, Observable } from 'rxjs';
-export interface cocktailState {
-  cocktail: unknown;
+import { Drink } from '../../models/cocktail.interface';
+export interface CocktailState {
+  cocktails: Drink[];
+  isLoadingResults: boolean
 }
 
-const initialState: cocktailState = {
-  cocktail: {},
+const initialState: CocktailState = {
+  cocktails: [],
+  isLoadingResults: false
 };
 
 @Injectable({
   providedIn: 'root',
 })
 export class CocktailStateService {
-  private cocktailStateSubject$ = new BehaviorSubject<cocktailState>(
+  private cocktailStateSubject$ = new BehaviorSubject<CocktailState>(
     initialState
   );
 
   private cocktailState$ = this.cocktailStateSubject$.asObservable();
 
-  select<K>(fnMap: (state: cocktailState) => K): Observable<K> {
+  select<K>(fnMap: (state: CocktailState) => K): Observable<K> {
     return this.cocktailState$.pipe(
       map((source) => fnMap(source)),
       distinctUntilChanged()
     );
   }
 
-  getCurrentState<K extends keyof cocktailState>(key: K): cocktailState[K] {
+  getCurrentState<K extends keyof CocktailState>(key: K): CocktailState[K] {
     return this.cocktailStateSubject$.getValue()[key];
   }
+  
+  getCocktailState(): Observable<CocktailState> {
+      return this.cocktailState$;
+    }
 
-  setcocktailState(cocktail: unknown): void {
-    this.updateState({ cocktail });
+  setCocktailState(cocktails: Drink[], isLoadingResults?: boolean): void {
+    this.updateState({cocktails, isLoadingResults } );
   }
 
-  updateState(partialState: Partial<cocktailState>): void {
+  updateState(partialState: Partial<CocktailState>): void {
     const currentState = this.cocktailStateSubject$.getValue();
     const newState = {
       ...currentState,
