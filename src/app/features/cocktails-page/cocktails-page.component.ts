@@ -15,7 +15,7 @@ import {
 import { MatTableDataSource } from '@angular/material/table';
 import { Observable } from 'rxjs';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
-import { CONSTANTS, HandlerStorageService } from '../../shared';
+import { CONSTANTS, HandlerStorageService, NotFoundComponent } from '../../shared';
 
 @Component({
   selector: 'app-home',
@@ -24,6 +24,7 @@ import { CONSTANTS, HandlerStorageService } from '../../shared';
     CocktailsTableComponent,
     CocktailFiltersComponent,
     NgxSkeletonLoaderModule,
+    NotFoundComponent
   ],
   templateUrl: './cocktails-page.component.html',
   styleUrl: './cocktails-page.component.scss',

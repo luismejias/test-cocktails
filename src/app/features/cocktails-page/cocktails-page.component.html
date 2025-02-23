@@ -1,11 +1,15 @@
-
 <div class="Cocktails-page">
   <app-cocktail-filters (filterFormValueChanged)="onFilter($event)"></app-cocktail-filters>
   @if (dataSource.data.length
   <= 0 && isLoadingResults) { <ngx-skeleton-loader count="6" appearance="line"
     [theme]="{height: '60px', background: '#e8e7e7'}" />
   }
-  @else {
+  @else if(dataSource.data.length
+  > 0 && !isLoadingResults){
   <app-cocktails-table [dataSource]="dataSource"></app-cocktails-table>
+  }
+
+  @else if(!(dataSource.data.length > 0) && !isLoadingResults){
+  <app-not-found></app-not-found>
   }
 </div>
