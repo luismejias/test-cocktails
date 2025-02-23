@@ -1,53 +1,74 @@
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormsModule, ReactiveFormsModule, NgControl } from '@angular/forms';
 import { OnlyNumbersDirective } from './only-numbers.directive';
-import { FormControl, NgControl } from '@angular/forms';
-import { render, screen, fireEvent } from '@testing-library/angular';
 import { Component } from '@angular/core';
-
-class MockNgControl extends NgControl {
-  control = new FormControl();
-  viewToModelUpdate() {}
-}
-
-@Component({
-  template: `<input appOnlyNumbers data-testid="input" [formControl]="control" />`,
-  standalone: true,
-  imports: [OnlyNumbersDirective],
-})
-class TestComponent {
-  control = new FormControl('');
-}
+import { By } from '@angular/platform-browser';
 
 describe('OnlyNumbersDirective', () => {
-  it('should create an instance', async () => {
-    const { fixture } = await render(TestComponent, {
-          imports: [OnlyNumbersDirective],
-          providers: [{
-            provide: NgControl, useValue: MockNgControl
-          }]
-        });
-    const directive = fixture.debugElement.query(
-      (el) => el.injector.get(OnlyNumbersDirective, null) !== null
-    );
+  let fixture: ComponentFixture<TestComponent>;
+  let inputElement: HTMLInputElement;
+  let ngControl: NgControl;
+
+  // Componente de prueba para envolver la directiva
+  @Component({
+    template: `<input type="text" [ngModel]="model" appOnlyNumbers />`
+  })
+  class TestComponent {
+    model: string = '';
+  }
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [TestComponent],
+      imports: [OnlyNumbersDirective, FormsModule, ReactiveFormsModule],
+    }).compileComponents();
+  });
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(TestComponent);
+    inputElement = fixture.debugElement.query(By.css('input')).nativeElement;
+    ngControl = fixture.debugElement.query(By.directive(OnlyNumbersDirective)).injector.get(NgControl);
+    fixture.detectChanges();
+  });
+
+  it('should create the directive', () => {
+    const directive = new OnlyNumbersDirective(ngControl);
     expect(directive).toBeTruthy();
   });
 
-  it('should allow only numbers', async () => {
-    await render(TestComponent, {
-      imports: [OnlyNumbersDirective],
-      providers: [{
-        provide: NgControl, useValue: MockNgControl
-      }]
-    });
+  it('should allow only numbers to be typed', () => {
+    inputElement.value = '123abc';
+    inputElement.dispatchEvent(new Event('input'));
 
-    const input = screen.getByTestId('input') as HTMLInputElement;
+    fixture.detectChanges();
 
-    fireEvent.input(input, { target: { value: '12345' } });
-    expect(input.value).toBe('12345');
+    expect(inputElement.value).toBe('123'); // non-numeric characters should be removed
+  });
 
-    fireEvent.input(input, { target: { value: '123abc' } });
-    expect(input.value).toBe('123');
+  it('should not alter numeric input', () => {
+    inputElement.value = '456789';
+    inputElement.dispatchEvent(new Event('input'));
 
-    fireEvent.input(input, { target: { value: '12!@#' } });
-    expect(input.value).toBe('12');
+    fixture.detectChanges();
+
+    expect(inputElement.value).toBe('456789'); // Numbers should remain intact
+  });
+
+  it('should update the ngModel correctly when non-numeric characters are entered', () => {
+    inputElement.value = '100A200';
+    inputElement.dispatchEvent(new Event('input'));
+
+    fixture.detectChanges();
+
+    expect(inputElement.value).toBe('100200'); // Non-numeric characters should be removed
+  });
+
+  it('should remove special characters while typing', () => {
+    inputElement.value = '123$%';
+    inputElement.dispatchEvent(new Event('input'));
+
+    fixture.detectChanges();
+
+    expect(inputElement.value).toBe('123'); // Only numbers should remain
   });
 });

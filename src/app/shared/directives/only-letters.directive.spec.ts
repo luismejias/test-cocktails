@@ -1,98 +1,74 @@
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormsModule, ReactiveFormsModule, NgControl } from '@angular/forms';
 import { OnlyLettersDirective } from './only-letters.directive';
-import { FormControl, FormsModule, NgControl, ReactiveFormsModule } from '@angular/forms';
-import { render, screen, fireEvent } from '@testing-library/angular';
-
-class MockNgControl extends NgControl {
-  control = new FormControl();
-  viewToModelUpdate() {}
-}
+import { Component } from '@angular/core';
+import { By } from '@angular/platform-browser';
 
 describe('OnlyLettersDirective', () => {
-  it('should create an instance', () => {
-    const directive = new OnlyLettersDirective(new MockNgControl());
+  let fixture: ComponentFixture<TestComponent>;
+  let inputElement: HTMLInputElement;
+  let ngControl: NgControl;
+
+  // Componente de prueba para envolver la directiva
+  @Component({
+    template: `<input type="text" [ngModel]="model" appOnlyLetters />`
+  })
+  class TestComponent {
+    model: string = '';
+  }
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+        declarations:[TestComponent],
+      imports: [ OnlyLettersDirective, FormsModule, ReactiveFormsModule],
+    }).compileComponents();
+  });
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(TestComponent);
+    inputElement = fixture.debugElement.query(By.css('input')).nativeElement;
+    ngControl = fixture.debugElement.query(By.directive(OnlyLettersDirective)).injector.get(NgControl);
+    fixture.detectChanges();
+  });
+
+  it('should create the directive', () => {
+    const directive = new OnlyLettersDirective(ngControl);
     expect(directive).toBeTruthy();
   });
 
-  it('should allow only letters and spaces', async () => {
-    await render(`<input appOnlyLetters data-testid="input" />`, {
-      imports: [OnlyLettersDirective],
-      providers: [{
-        provide: NgControl, useValue: MockNgControl
-      }]
-    });
-    const input = screen.getByTestId('input') as HTMLInputElement;
-    const event = new KeyboardEvent('keydown', { key: '@' });
-    fireEvent.input(input, event);
-    expect(input.value).toBe('');
-  });
+  it('should allow only letters and spaces to be typed', () => {
+    inputElement.value = 'abc123!';
+    inputElement.dispatchEvent(new Event('input'));
 
-  it('should allow only letters and spaces', async () => {
-    const { fixture } = await render(`<input appOnlyLetters data-testid="input" />`, {
-      imports: [OnlyLettersDirective],
-      providers: [{
-        provide: NgControl, useClass: MockNgControl
-      }]
-    });
-    const input = screen.getByTestId('input') as HTMLInputElement;
-
-    fireEvent.keyDown(input, { key: '@' });
-    input.value ='@';
     fixture.detectChanges();
-    
-    
-    expect(input.value).toBe('');
+
+    expect(inputElement.value).toBe('abc'); // non-alphabetic characters should be removed
   });
 
-  it('should allow only lettersxxxxx', async () => {
-    const { fixture } = await render(`<input appOnlyLetters data-testid="input" />`, {
-      imports: [OnlyLettersDirective],
-      providers: [{
-        provide: NgControl, useClass: MockNgControl
-      }]
-    });
-    const input = screen.getByTestId('input') as HTMLInputElement;
+  it('should not alter letters and spaces', () => {
+    inputElement.value = 'Hello World';
+    inputElement.dispatchEvent(new Event('input'));
 
-    fireEvent.input(input, { target: { value: 'Hello!@#' } });
-    
     fixture.detectChanges();
-    console.log('input.value=> ', input.value);
-    
-    expect(input.value).toBe('Hello');
+
+    expect(inputElement.value).toBe('Hello World'); // Letters and spaces should remain intact
   });
 
-  it('should allow only letters and spaces*********************', async () => {
-    await render(`<input appOnlyLetters data-testid="input" />`, {
-      imports: [OnlyLettersDirective, ReactiveFormsModule, FormsModule],
-      providers: [{ provide: NgControl, useClass: MockNgControl }],
-    });
+  it('should update the ngModel correctly when invalid characters are entered', () => {
+    inputElement.value = 'Test@123';
+    inputElement.dispatchEvent(new Event('input'));
 
-    const input = screen.getByTestId('input') as HTMLInputElement;
+    fixture.detectChanges();
 
-    // Simular eventos válidos de teclas (letras y espacios)
-    fireEvent.keyDown(input, { key: 'H', code: 'KeyH', charCode: 72 });
-    fireEvent.input(input, { target: { value: 'H' } });
+    expect(inputElement.value).toBe('Test'); // Non-letters should be removed
+  });
 
-    fireEvent.keyDown(input, { key: 'e', code: 'KeyE', charCode: 69 });
-    fireEvent.input(input, { target: { value: 'He' } });
+  it('should remove numbers and special characters while typing', () => {
+    inputElement.value = 'Test1234!';
+    inputElement.dispatchEvent(new Event('input'));
 
-    fireEvent.keyDown(input, { key: ' ', code: 'Space', charCode: 32 });
-    fireEvent.input(input, { target: { value: 'He ' } });
+    fixture.detectChanges();
 
-    fireEvent.keyDown(input, { key: 'l', code: 'KeyL', charCode: 76 });
-    fireEvent.input(input, { target: { value: 'He l' } });
-
-    fireEvent.keyDown(input, { key: 'o', code: 'KeyO', charCode: 79 });
-    fireEvent.input(input, { target: { value: 'He lo' } });
-
-    expect(input.value).toBe('He lo');
-
-    // Simular eventos de teclas inválidas
-    fireEvent.keyDown(input, { key: '!', code: 'Digit1', charCode: 33 });
-    fireEvent.input(input, { target: { value: 'He lo!' } });
-
-    fireEvent.keyDown(input, { key: '@', code: 'Digit2', charCode: 64 });
-    fireEvent.input(input, { target: { value: 'He lo!@' } });
-
-    expect(input.value).toBe('He lo');
+    expect(inputElement.value).toBe('Test'); // Only letters and spaces are allowed
   });
 });

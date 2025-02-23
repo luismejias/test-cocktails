@@ -40,11 +40,6 @@ export class CocktailsPageComponent implements OnInit {
   isLoadingResults: boolean = false;
 
   ngOnInit() {
-    this.cocktailFiltersStateService
-      .getCocktailFiltersState()
-      .subscribe((res) => {
-        console.log('estado de los filtros => ', res);
-      });
     this._loadData();
     this._getDataCocktailsFromState();
   }
