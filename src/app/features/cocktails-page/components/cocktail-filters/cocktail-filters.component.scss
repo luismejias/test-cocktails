@@ -3,3 +3,12 @@
     gap: 8px;
     width: 100%;
 }
+
+@media (max-width: 599px) {
+    .cocktail-filters {
+        display:flex;
+        flex-direction: column;
+        gap: 8px;
+        width: 100%;
+    } 
+}

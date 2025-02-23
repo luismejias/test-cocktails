@@ -62,7 +62,13 @@ export interface Cocktails {
     ingredients: string[];
     measures: string[];
     instructions: string | null;
+    favorite: boolean;
     image: string;
-    actions: any[]
+    actions?: Action[]
   };
+
+  export interface Action {
+    label: string;
+    description: string;
+  }
   

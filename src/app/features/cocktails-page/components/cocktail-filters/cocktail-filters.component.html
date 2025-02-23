@@ -1,27 +1,18 @@
 <form [formGroup]="cocktailsFiltersForm" class="cocktail-filters">
     <mat-form-field appearance="outline">
         <mat-label>ID</mat-label>
-        <input matInput placeholder="Buscar cóctel ID" formControlName="id" appOnlyNumbers/>
-        @if (cocktailsFiltersForm.get('id')?.errors) {
-        <mat-error>¡Por favor ingrese un elemento válido!</mat-error>
-        }
+        <input matInput placeholder="Solo números" formControlName="id" appOnlyNumbers />
     </mat-form-field>
 
     <mat-form-field appearance="outline">
         <mat-label>Nombre</mat-label>
-        <input matInput placeholder="Buscar cóctel por nombre" formControlName="name" appOnlyLetters maxlength="50"/>
-        @if (cocktailsFiltersForm.get('name')?.errors) {
-        <mat-error>¡Por favor ingrese un elemento válido!</mat-error>
-        }
+        <input matInput placeholder="Solo letras" formControlName="name" appOnlyLetters maxlength="50" />
     </mat-form-field>
 
     <mat-form-field appearance="outline">
         <mat-label>Ingrediente</mat-label>
-        <input matInput placeholder="Buscar cóctel por ingrediente" formControlName="ingredient" />
-        @if (cocktailsFiltersForm.get('ingredient')?.errors) {
-        <mat-error>¡Por favor ingrese un elemento válido!</mat-error>
-        }
+        <input matInput placeholder="Letra o números" formControlName="ingredient" />
     </mat-form-field>
-    <button class="btn-primary"(click)="filterFormValueChangedEmit()">Filtrar</button>
-    <button class="btn-secundary"(click)="cleanFilters()">Limpiar Filtros</button>
+    <button class="btn-primary" (click)="filterFormValueChangedEmit()">Filtrar</button>
+    <button class="btn-secundary" (click)="cleanFilters()">Limpiar Filtros</button>
 </form>

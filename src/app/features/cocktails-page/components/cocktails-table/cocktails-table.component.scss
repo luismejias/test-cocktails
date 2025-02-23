@@ -2,10 +2,6 @@
     display: flex;
     flex-direction: column;
 
-    &__table {
-        min-width: 1300px;
-    }
-
     &__item-header {
         display: flex !important;
         justify-content: center;
@@ -17,6 +13,13 @@
         width: 40%;
         text-align: justify;
         padding: 10px 0px;
+    }
+
+    &__column {
+        display: flex; 
+        justify-content: center; 
+        height: 56px; 
+        align-items: center;
     }
 
 }

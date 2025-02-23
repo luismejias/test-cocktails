@@ -1,4 +1,4 @@
-import { Component, inject, Inject, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
@@ -8,14 +8,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
   templateUrl: './dialog-detail.component.html',
   styleUrl: './dialog-detail.component.scss'
 })
-export class DialogDetailComponent implements OnInit {
+export class DialogDetailComponent {
   readonly dialogRef = inject(MatDialogRef<DialogDetailComponent>);
   readonly data = inject<any>(MAT_DIALOG_DATA);
-
-  ngOnInit(): void {
-    console.log('DATA DIALOG => ', this.data);
-
-  }
-
-  
 }

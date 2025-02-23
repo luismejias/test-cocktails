@@ -1,5 +1,5 @@
 <div class="cocktails-table mat-elevation-z8">  
-    <table mat-table [dataSource]="dataSource" class="cocktails-table__table">
+    <table mat-table [dataSource]="dataSource">
      <ng-container matColumnDef="id" class="cocktails-table__item-header">
       <th  mat-header-cell *matHeaderCellDef> Id </th>
       <td mat-cell *matCellDef="let element"> {{element.id}} </td>
@@ -19,7 +19,16 @@
       </td>
     </ng-container>
 
+    <ng-container matColumnDef="favorites">
+      <th mat-header-cell *matHeaderCellDef>Favoritos</th>
+      <td mat-cell *matCellDef="let element">
+       @if (element.favorite) {
+        <mat-icon [ngStyle]="{'color':'#FFC300'}">star</mat-icon>
+       }     
 
+      </td>
+    </ng-container>
+    
     <ng-container matColumnDef="image" class="cocktails-table__item-header">
       <th  mat-header-cell *matHeaderCellDef> Imagen </th>
       <td mat-cell *matCellDef="let element"><img src="{{element.image}}" width="100px" height="80px"> </td>
@@ -29,11 +38,11 @@
       <th mat-header-cell *matHeaderCellDef> Acciones </th>
       <td mat-cell *matCellDef="let element">
         <button mat-icon-button [matMenuTriggerFor]="menu">
-          <mat-icon>more_vert</mat-icon>
+          <mat-icon>more_vert</mat-icon>          
         </button>
         <mat-menu #menu="matMenu">
           @for (option of element.actions; track option) {
-            <button mat-menu-item (click)="sendAction(element, option.action)">
+            <button mat-menu-item (click)="sendAction(element, option.description)">
               {{ option.label }}
             </button>
           }
